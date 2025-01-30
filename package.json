@@ -1,0 +1,21 @@
+{
+  "name": "com.hydroper.ftl",
+  "version": "1.1.2",
+  "description": "Work with Fluent Translation Lists in TypeScript",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "browser": {
+    "src/fileSystemLoader.nodejs.js": "src/fileSystemLoader.browser.js"
+  },
+  "types": "src/index.d.ts",
+  "keywords": ["fluent", "ftl"],
+  "author": "hydroper",
+  "license": "ISC",
+  "dependencies": {
+    "@fluent/bundle": "^0.18.0",
+    "axios": "^1.3.6"
+  },
+  "repository": "https://github.com/hydroper/typescript-ftl"
+}
