@@ -5,7 +5,7 @@ import { FluentBundle } from "@fluent/bundle";
 
 export default function loader(self: FluentBox, locale: Intl.Locale, localeAsStr: string, bundle: FluentBundle): Promise<[string, FluentBundle]> {
     return Promise.all(
-        self._assetFilesAsUntyped.map(
+        self._assetsFiles.slice(0).map(
             fileName => {
                 let localePathComp = self._localeToPathComponents.get(localeAsStr);
                 if (localePathComp === undefined) {

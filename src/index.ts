@@ -8,7 +8,6 @@ import { FluentBundle, FluentVariable } from "@fluent/bundle";
 export class FluentBox {
     private _currentLocale: Intl.Locale | null = null;
 
-    // Map<string, string>
     // Maps a locale identifier String to its equivalent path component.
     // The string mapped depends in how the
     // FluentBox object was constructed. If the `supportedLocales` option
@@ -16,7 +15,7 @@ export class FluentBox {
     // When FTLs are loaded, this component is appended to the URL or file path;
     // for example, `"res/lang/en-us"`.
     /** @hidden */
-    _localeToPathComponents = new Map;
+    _localeToPathComponents: Map<string, string> = new Map;
 
     private _supportedLocales: Set<string> = new Set;
     private _defaultLocale: Intl.Locale | null = null;
@@ -121,7 +120,7 @@ export class FluentBox {
      * that were specified when constructing the `FluentBox` object,
      * otherwise `false`.
      */
-    supportsLocale(argument: Intl.Locale | string) {
+    supportsLocale(argument: Intl.Locale | string): boolean {
         return this._supportedLocales.has(argument.toString());
     }
 
@@ -204,15 +203,6 @@ export class FluentBox {
         });
     } // load
 
-    /** @hidden  */
-    get _assetFilesAsUntyped() {
-        let r = [];
-        for (let v of this._assetsFiles) {
-            r.push(v);
-        }
-        return r;
-    }
-
     // should resolve to [string, FluentBundle] (the first String is locale.toString())
     private _loadSingleLocale(locale: Intl.Locale): Promise<[string, FluentBundle]> {
         let self = this;
@@ -285,11 +275,11 @@ export class FluentBox {
     /**
      * Determines if a message is defined.
      */
-    hasMessage(id: string) {
+    hasMessage(id: string): boolean {
         return this._currentLocale ? this._hasMessageByLocale(id, this._currentLocale.toString()) : false;
     }
 
-    private _hasMessageByLocale(id: string, locale: string) {
+    private _hasMessageByLocale(id: string, locale: string): boolean {
         let assets = this._assets.get(locale);
         if (assets) {
             let msg = assets.getMessage(id);
@@ -312,7 +302,7 @@ export class FluentBox {
      * Clones the `FluentBox` object, but returning an object that is
      * in sync with the original `FluentBox` object.
      */
-    clone() {
+    clone(): FluentBox {
         let r = new FluentBox(FluentBox._PRIVATE_CTOR);
         r._currentLocale = this._currentLocale;
         r._localeToPathComponents = this._localeToPathComponents;
