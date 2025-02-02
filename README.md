@@ -78,7 +78,3 @@ hello = Hello, { $to }!
 Usually, for server applications, set the `cleanUnusedAssets` option to `false` and clone the `FluentBox` object when necessary by invoking `fluentBox.clone();` to change the current locale.
 
 The `fluentBox.clone();` method clones the `FluentBox` object, but still re-uses resources from the original object, avoiding resource duplication.
-
-## API
-
-Currently no TypeDocs generated, but you can consult the API at: [index.d.ts](src/index.d.ts).
