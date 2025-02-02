@@ -11,13 +11,9 @@ That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/c
 
 ## Getting Started
 
-Install dependency through one of the following commands depending on your package manager:
+Install dependency using [Bun](https://bun.sh):
 
 ```sh
-# NPM
-npx jsr add @hydroper/fluent
-
-# Bun
 bunx jsr add @hydroper/fluent
 ```
 
