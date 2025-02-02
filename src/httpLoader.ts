@@ -1,9 +1,9 @@
-const { addFTLBundleResource } = require('./bundleUtils.js');
+import { addFTLBundleResource } from "./bundleUtils";
+import axios from "axios";
+import type { FluentBox } from ".";
+import { FluentBundle } from "@fluent/bundle";
 
-// HTTP request
-const axios = require('axios');
-
-module.exports = (self, locale, localeAsStr, bundle) => {
+export default function loader(self: FluentBox, locale: Intl.Locale, localeAsStr: string, bundle: FluentBundle): Promise<[string, FluentBundle]> {
     return Promise.all(
         self._assetFilesAsUntyped.map(
             fileName => {
@@ -11,7 +11,7 @@ module.exports = (self, locale, localeAsStr, bundle) => {
                 if (localePathComp === undefined) {
                     throw new Error(`Fallback is not a supported locale: ${localeAsStr}`);
                 }
-                let resPath = `${self._assetSource}/${localePathComp}/${fileName}.ftl`;
+                let resPath = `${self._assetsSource}/${localePathComp}/${fileName}.ftl`;
                 return new Promise((resolve, reject) => {
                     axios({
                         method: 'get',

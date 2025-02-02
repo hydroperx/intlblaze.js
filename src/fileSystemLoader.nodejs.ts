@@ -1,14 +1,16 @@
-const fs = require('fs');
-const path = require('path');
-const { addFTLBundleResource } = require('./bundleUtils.js');
+import * as fs from "fs";
+import * as path from "path";
+import { addFTLBundleResource } from "./bundleUtils";
+import type { FluentBox } from ".";
+import { FluentBundle } from "@fluent/bundle";
 
-module.exports = (self, locale, localeAsStr, bundle) => {
-    for (let fileName of self._assetFiles) {
+export default function loader(self: FluentBox, locale: Intl.Locale, localeAsStr: string, bundle: FluentBundle): Promise<[string, FluentBundle]> {
+    for (let fileName of self._assetsFiles) {
         let localePathComp = self._localeToPathComponents.get(localeAsStr);
         if (localePathComp === undefined) {
             throw new Error(`Fallback is not a supported locale: ${localeAsStr}`);
         }
-        let resPath = `${self._assetSource}/${localePathComp}/${fileName}.ftl`;
+        let resPath = `${self._assetsSource}/${localePathComp}/${fileName}.ftl`;
         try {
             let source = fs.readFileSync(path.resolve(resPath), 'utf8');
             addFTLBundleResource(fileName, source, bundle);

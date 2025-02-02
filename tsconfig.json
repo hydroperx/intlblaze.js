@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
-      "lib": ["es2017", "ES2020.Intl"],
-      "types": [],
+      "target": "ES2024",
+      "moduleResolution": "node",
+      "lib": ["es2017", "DOM", "ES2020.Intl"],
       "strict": true,
       "noEmit": true
     }

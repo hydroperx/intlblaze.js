@@ -1,60 +1,66 @@
-# TypeScript Fluent Translation List
+# @hydroper/fluent
 
-Rapidly support Fluent Translation Lists in your web application. This uses the NPM package [`@fluent/bundle`](https://www.npmjs.com/package/@fluent/bundle).
-
-Both client-side and server-side applications are supported.
+Rapidly support Fluent Project's translation in your web application. Both client-side and server-side applications are supported.
 
 ## Getting Started
 
-Install dependency:
+Install dependency through one of the following commands depending on your package manager:
 
-```
-npm install com.hydroper.ftl
+```sh
+# NPM
+npx jsr add @hydroper/fluent
+
+# Bun
+bunx jsr add @hydroper/fluent
 ```
 
 Example TypeScript:
 
 ```ts
-import { FTL } from 'com.hydroper.ftl';
+import { FluentBox } from "@hydroper/fluent";
 
-class Main {
-    ftl: FTL;
+class Main
+{
+    fluentBox: FluentBox;
 
-    constructor() {
-        this.ftl = new FTL({
-            supportedLocales: ['en'],
+    constructor()
+    {
+        this.fluentBox = new FluentBox({
+            supportedLocales: ["en"],
             fallbacks: {
-                // 'pt-BR': ['en'],
+                // "pt-BR": ["en"],
             },
-            defaultLocale: 'en',
+            defaultLocale: "en",
 
-            assetSource: 'res/lang',
-            assetFiles: [
-                '_', // res/lang/LANG/_.ftl
+            assetsSource: "res/lang",
+            assetsFiles: [
+                "_", // res/lang/LANG/_.ftl
             ],
 
             cleanUnusedAssets: true,
 
             // specify either 'http' or 'fileSystem' as load method
-            loadMethod: 'fileSystem',
+            loadMethod: "fileSystem",
         });
         this.initialize();
     }
 
-    async initialize() {
-        if (!(await this.ftl.load())) {
+    async initialize()
+    {
+        if (!(await this.fluentBox.load()))
+        {
             // failed to load
             return;
         }
 
-        console.log(this.ftl.getMessage('hello', { to: 'Jessica' }));
+        console.log(this.fluentBox.getMessage("hello", { to: "Diantha" }));
     }
 }
 
 new Main();
 ```
 
-Example FTL at `res/lang/en/_.ftl`:
+Example FTL file at `res/lang/en/_.ftl`:
 
 ```
 hello = Hello, { $to }!
@@ -62,9 +68,9 @@ hello = Hello, { $to }!
 
 ## Server Usage
 
-Usually, for server applications, set the `cleanUnusedAssets` option to `false` and clone the `FTL` object when necessary by invoking `ftl.clone();` to change the current locale.
+Usually, for server applications, set the `cleanUnusedAssets` option to `false` and clone the `FluentBox` object when necessary by invoking `fluentBox.clone();` to change the current locale.
 
-The `ftl.clone();` method clones the `FTL` object, but still re-uses resources from the original object, avoiding resource duplication.
+The `fluentBox.clone();` method clones the `FluentBox` object, but still re-uses resources from the original object, avoiding resource duplication.
 
 ## API
 

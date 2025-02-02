@@ -1,6 +1,6 @@
-const { FluentResource } = require('@fluent/bundle');
+import { FluentBundle, FluentResource } from "@fluent/bundle";
 
-exports.addFTLBundleResource = (fileName, source, bundle) => {
+export function addFTLBundleResource(fileName: string, source: string, bundle: FluentBundle) {
     try {
         let res = new FluentResource(source);
         let resErrors = bundle.addResource(res);

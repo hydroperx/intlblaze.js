@@ -1,30 +1,34 @@
-const fileSystemLoader = require('./fileSystemLoader.nodejs.js');
-const httpLoader = require('./httpLoader.js');
-const { FluentBundle, FluentResource } = require('@fluent/bundle');
+import fileSystemLoader from "./fileSystemLoader.nodejs";
+import httpLoader from "./httpLoader";
+import { FluentBundle, FluentResource, FluentVariable } from "@fluent/bundle";
 
-class FTL {
-    _currentLocale = null;
+export class FluentBox {
+    private _currentLocale: Intl.Locale | null = null;
 
     // Map<string, string>
     // Maps a locale identifier String to its equivalent path component.
     // The string mapped depends in how the
-    // FTL object was constructed. If the `supportedLocales` option
-    // contains "en-us", then `_localeToPathComponents.get(new Locale("en-US").toString())` returns "en-us".
+    // FluentBox object was constructed. If the `supportedLocales` option
+    // contains "en-us", then `_localeToPathComponents.get(new Intl.Locale("en-US").toString())` returns "en-us".
     // When FTLs are loaded, this component is appended to the URL or file path;
     // for example, `"res/lang/en-us"`.
+    /** @hidden */
     _localeToPathComponents = new Map;
 
-    _supportedLocales = new Set;
-    _defaultLocale = null;
-    _fallbacks = new Map;
-    _assets = new Map;
-    _assetsSource = '';
-    _assetsFiles = [];
-    _bundleInitializers = [];
-    _cleanUnusedAssets = true;
-    _loadMethod = 'http';
+    private _supportedLocales: Set<string> = new Set;
+    private _defaultLocale: Intl.Locale | null = null;
+    private _fallbacks: Map<string, string[]> = new Map;
+    /** @hidden */
+    _assets: Map<string, FluentBundle> = new Map;
+    /** @hidden */
+    _assetsSource: string = '';
+    /** @hidden */
+    _assetsFiles: string[] = [];
+    private _bundleInitializers: BundleInitializer[] = [];
+    private _cleanUnusedAssets: boolean = true;
+    private _loadMethod: "http" | "fileSystem" = "http";
 
-    static _parseLocaleOrThrow(s) {
+    private static _parseLocaleOrThrow(s: string | Intl.Locale) {
         try {
             return new Intl.Locale(s);
         } catch (e) {
@@ -32,10 +36,11 @@ class FTL {
         }
     }
 
-    static _PRIVATE_CTOR = {};
+    /** @hidden */
+    static _PRIVATE_CTOR: any = {};
 
-    constructor(options) {
-        if (options === FTL._PRIVATE_CTOR) {
+    constructor(options: FluentBoxOptions) {
+        if (options === FluentBox._PRIVATE_CTOR) {
             return;
         }
         if (typeof options !== 'object') {
@@ -45,13 +50,13 @@ class FTL {
             throw new Error('options.supportedLocales must be an Array');
         }
         for (let unparsedLocale of options.supportedLocales) {
-            let parsedLocale = FTL._parseLocaleOrThrow(unparsedLocale);
+            let parsedLocale = FluentBox._parseLocaleOrThrow(unparsedLocale);
             this._localeToPathComponents.set(parsedLocale.toString(), unparsedLocale);
             this._supportedLocales.add(parsedLocale.toString());
         }
         let fallbacks = options.fallbacks || {};
         for (let fallbackUnparsedLocale in fallbacks) {
-            let fallbackParsedLocale = FTL._parseLocaleOrThrow(fallbackUnparsedLocale);
+            let fallbackParsedLocale = FluentBox._parseLocaleOrThrow(fallbackUnparsedLocale);
             let fallbackArray = fallbacks[fallbackUnparsedLocale];
             if (!fallbackArray) {
                 throw new Error('options.fallbacks must map Locales to Arrays');
@@ -60,23 +65,23 @@ class FTL {
                 if (typeof a !== 'string') {
                     throw new Error('options.fallbacks object is malformed');
                 }
-                return FTL._parseLocaleOrThrow(a).toString();
+                return FluentBox._parseLocaleOrThrow(a).toString();
             }));
         }
         if (typeof options.defaultLocale !== 'string') {
             throw new Error('options.defaultLocale must be a String');
         }
-        this._defaultLocale = FTL._parseLocaleOrThrow(options.defaultLocale);
+        this._defaultLocale = FluentBox._parseLocaleOrThrow(options.defaultLocale);
         if (typeof options.assetSource !== 'string') {
             throw new Error('options.assetSource must be a String');
         }
-        this._assetSource = String(options.assetSource);
+        this._assetsSource = String(options.assetSource);
         if (!(options.assetFiles instanceof Array)) {
             throw new Error('options.assetFiles must be an Array');
         }
-        this._assetFiles = [];
+        this._assetsFiles = [];
         for (let fileName of options.assetFiles) {
-            this._assetFiles.push(fileName);
+            this._assetsFiles.push(fileName);
         }
         if (typeof options.cleanUnusedAssets !== 'boolean') {
             throw new Error('options.cleanUnusedAssets must be a Boolean');
@@ -87,47 +92,52 @@ class FTL {
             throw new Error('options.loadMethod must be one of ["http", "fileSystem"]');
         }
         this._loadMethod = options.loadMethod;
-    } // FTL constructor
+    } // FluentBox constructor
 
-    addBundleInitializer(fn) {
+    addBundleInitializer(fn: BundleInitializer) {
         this._bundleInitializers.push(fn);
     }
 
     get supportedLocales() {
         let r = new Set;
         for (let v of this._supportedLocales) {
-            r.add(new Locale(v));
+            r.add(new Intl.Locale(v));
         }
         return r;
     }
 
-    supportsLocale(argument) {
+    supportsLocale(argument: Intl.Locale | string) {
         return this._supportedLocales.has(argument.toString());
     }
 
-    get currentLocale() {
+    get currentLocale(): Intl.Locale | null {
         return this._currentLocale;
     }
 
-    get localeAndFallbacks() {
+    get localeAndFallbacks(): Intl.Locale[] {
         if (this._currentLocale) {
-            let r = [this._currentLocale];
+            let r: Intl.Locale[] = [this._currentLocale];
             this._enumerateFallbacks(this._currentLocale.toString(), r);
             return r;
         }
         return [];
     }
 
-    get fallbacks() {
+    get fallbacks(): Intl.Locale[] {
         if (this._currentLocale) {
-            let r = [];
+            let r: Intl.Locale[] = [];
             this._enumerateFallbacks(this._currentLocale.toString(), r);
             return r;
         }
         return [];
     }
 
-    load(newLocale = null) {
+    /**
+     * Attempts to load locale FTL resources.
+     * 
+     * @returns Returns `true` if successful, or `false` otherwise.
+     */
+    load(newLocale: Intl.Locale | null = null): Promise<boolean> {
         newLocale ||= this._defaultLocale;
         if (!(newLocale instanceof Intl.Locale)) {
             throw new Error(`Locale argument must be an Intl.Locale object`);
@@ -137,7 +147,7 @@ class FTL {
         }
         let self = this;
         return new Promise((resolve, reject) => {
-            let toLoad = new Set([newLocale]);
+            let toLoad: Set<Intl.Locale> = new Set([newLocale]);
             self._enumerateFallbacksToSet(newLocale.toString(), toLoad);
 
             let newAssets = new Map;
@@ -155,7 +165,7 @@ class FTL {
                     self._currentLocale = newLocale;
 
                     for (let bundleInit of self._bundleInitializers) {
-                        bundleInit(newLocale, self._assets.get(newLocale.toString()));
+                        bundleInit(newLocale, self._assets.get(newLocale.toString())!);
                     }
 
                     resolve(true);
@@ -166,19 +176,20 @@ class FTL {
         });
     } // load
 
+    /** @hidden  */
     get _assetFilesAsUntyped() {
         let r = [];
-        for (let v of this._assetFiles) {
+        for (let v of this._assetsFiles) {
             r.push(v);
         }
         return r;
     }
 
     // should resolve to [string, FluentBundle] (the first String is locale.toString())
-    _loadSingleLocale(locale) {
+    private _loadSingleLocale(locale: Intl.Locale): Promise<[string, FluentBundle]> {
         let self = this;
         let localeAsStr = locale.toString();
-        let bundle = new FluentBundle(locale);
+        let bundle = new FluentBundle(localeAsStr);
 
         if (this._loadMethod == 'fileSystem') {
             return fileSystemLoader(self, locale, localeAsStr, bundle);
@@ -187,41 +198,45 @@ class FTL {
         }
     }
 
-    _enumerateFallbacks(locale, output) {
+    private _enumerateFallbacks(locale: string, output: Intl.Locale[]) {
         let list = this._fallbacks.get(locale);
         if (!list) {
             return;
         }
         for (let item of list) {
-            output.push(new Locale(item));
+            output.push(new Intl.Locale(item));
             this._enumerateFallbacks(item, output);
         }
     }
 
-    _enumerateFallbacksToSet(locale, output) {
+    private _enumerateFallbacksToSet(locale: string, output: Set<Intl.Locale>) {
         let list = this._fallbacks.get(locale);
         if (!list) {
             return;
         }
         for (let item of list) {
-            output.add(new Locale(item));
+            output.add(new Intl.Locale(item));
             this._enumerateFallbacksToSet(item, output);
         }
     }
 
-    getMessage(id, args = undefined, errors = null) {
+    getMessage(id: string, args: undefined | Record<string, FluentVariable> = undefined, errors: null | Error[] = null): string | null {
         if (!this._currentLocale) {
             return null;
         }
         return this._getMessageByLocale(id, this._currentLocale.toString(), args, errors);
     }
 
-    _getMessageByLocale(id, locale, args, errors) {
+    private _getMessageByLocale(id: string, locale: string, args: undefined | Record<string, FluentVariable>, errors: null | Error[]): string | null {
         let assets = this._assets.get(locale);
         if (assets) {
             let msg = assets.getMessage(id);
             if (msg !== undefined) {
-                return assets.formatPattern(msg.value, args, errors);
+                if (msg.value !== null)
+                {
+                    return assets.formatPattern(msg.value, args, errors);
+                }
+                return "";
             }
         }
         let fallbacks = this._fallbacks.get(locale);
@@ -236,11 +251,11 @@ class FTL {
         return null;
     } // _getMessageByLocale
 
-    hasMessage(id) {
+    hasMessage(id: string) {
         return this._currentLocale ? this._hasMessageByLocale(id, this._currentLocale.toString()) : false;
     }
 
-    _hasMessageByLocale(id, locale) {
+    private _hasMessageByLocale(id: string, locale: string) {
         let assets = this._assets.get(locale);
         if (assets) {
             let msg = assets.getMessage(id);
@@ -260,7 +275,7 @@ class FTL {
     }
 
     clone() {
-        let r = new FTL(FTL._PRIVATE_CTOR);
+        let r = new FluentBox(FluentBox._PRIVATE_CTOR);
         r._currentLocale = this._currentLocale;
         r._localeToPathComponents = this._localeToPathComponents;
         r._supportedLocales = this._supportedLocales;
@@ -268,12 +283,22 @@ class FTL {
         r._fallbacks = this._fallbacks;
         r._bundleInitializers = this._bundleInitializers;
         r._assets = this._assets;
-        r._assetSource = this._assetSource;
-        r._assetFiles = this._assetFiles;
+        r._assetsSource = this._assetsSource;
+        r._assetsFiles = this._assetsFiles;
         r._cleanUnusedAssets = this._cleanUnusedAssets;
         r._loadMethod = this._loadMethod;
         return r;
     }
 }
 
-exports.FTL = FTL;
+export type FluentBoxOptions = {
+    supportedLocales: string[];
+    fallbacks?: Record<string, string[]>;
+    defaultLocale: string;
+    assetSource: string;
+    assetFiles: string[];
+    cleanUnusedAssets: boolean;
+    loadMethod: "http" | "fileSystem";
+};
+
+export type BundleInitializer = (locale: Intl.Locale, bundle: FluentBundle) => void;
