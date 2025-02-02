@@ -2,6 +2,8 @@
 
 Rapidly support Fluent Project's translation in your web application. Both client-side and server-side applications are supported.
 
+That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/com.hydroper.ftl).
+
 ## Getting Started
 
 Install dependency through one of the following commands depending on your package manager:
@@ -32,8 +34,8 @@ class Main
             },
             defaultLocale: "en",
 
-            assetsSource: "res/lang",
-            assetsFiles: [
+            assetSource: "res/lang",
+            assetFiles: [
                 "_", // res/lang/LANG/_.ftl
             ],
 

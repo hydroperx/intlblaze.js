@@ -1,7 +1,10 @@
 import fileSystemLoader from "./fileSystemLoader.nodejs";
 import httpLoader from "./httpLoader";
-import { FluentBundle, FluentResource, FluentVariable } from "@fluent/bundle";
+import { FluentBundle, FluentVariable } from "@fluent/bundle";
 
+/**
+ * Manages Fluent Project translation lists (FTL).
+ */
 export class FluentBox {
     private _currentLocale: Intl.Locale | null = null;
 
@@ -94,26 +97,44 @@ export class FluentBox {
         this._loadMethod = options.loadMethod;
     } // FluentBox constructor
 
+    /**
+     * Adds a bundle initializer. This allows defining custom functions and more.
+     */
     addBundleInitializer(fn: BundleInitializer) {
         this._bundleInitializers.push(fn);
     }
 
-    get supportedLocales() {
-        let r = new Set;
+    /**
+     * Returns a set of supported locales, reflecting
+     * the ones that were specified when constructing the `FluentBox` object.
+     */
+    get supportedLocales(): Set<Intl.Locale> {
+        let r: Set<Intl.Locale> = new Set;
         for (let v of this._supportedLocales) {
             r.add(new Intl.Locale(v));
         }
         return r;
     }
 
+    /**
+     * Returns `true` if the locale is one of the supported locales
+     * that were specified when constructing the `FluentBox` object,
+     * otherwise `false`.
+     */
     supportsLocale(argument: Intl.Locale | string) {
         return this._supportedLocales.has(argument.toString());
     }
 
+    /**
+     * Returns the currently loaded locale or null if none.
+     */
     get currentLocale(): Intl.Locale | null {
         return this._currentLocale;
     }
 
+    /**
+     * Returns the currently loaded locale followed by its fallbacks or empty if no locale is loaded.
+     */
     get localeAndFallbacks(): Intl.Locale[] {
         if (this._currentLocale) {
             let r: Intl.Locale[] = [this._currentLocale];
@@ -123,6 +144,9 @@ export class FluentBox {
         return [];
     }
 
+    /**
+     * Returns the currently loaded fallbacks.
+     */
     get fallbacks(): Intl.Locale[] {
         if (this._currentLocale) {
             let r: Intl.Locale[] = [];
@@ -133,9 +157,13 @@ export class FluentBox {
     }
 
     /**
-     * Attempts to load locale FTL resources.
+     * Attempts to load a locale and its fallbacks.
+     * If the locale argument is specified, it is loaded.
+     * Otherwise, if there is a default locale, it is loaded, and if not,
+     * the method throws an error.
      * 
-     * @returns Returns `true` if successful, or `false` otherwise.
+     * If any resource fails to load, the returned `Promise`
+     * resolves to `false`, otherwise `true`.
      */
     load(newLocale: Intl.Locale | null = null): Promise<boolean> {
         newLocale ||= this._defaultLocale;
@@ -220,6 +248,9 @@ export class FluentBox {
         }
     }
 
+    /**
+     * Retrieves message and formats it. Returns `null` if undefined.
+     */
     getMessage(id: string, args: undefined | Record<string, FluentVariable> = undefined, errors: null | Error[] = null): string | null {
         if (!this._currentLocale) {
             return null;
@@ -251,6 +282,9 @@ export class FluentBox {
         return null;
     } // _getMessageByLocale
 
+    /**
+     * Determines if a message is defined.
+     */
     hasMessage(id: string) {
         return this._currentLocale ? this._hasMessageByLocale(id, this._currentLocale.toString()) : false;
     }
@@ -274,6 +308,10 @@ export class FluentBox {
         return false;
     }
 
+    /**
+     * Clones the `FluentBox` object, but returning an object that is
+     * in sync with the original `FluentBox` object.
+     */
     clone() {
         let r = new FluentBox(FluentBox._PRIVATE_CTOR);
         r._currentLocale = this._currentLocale;
