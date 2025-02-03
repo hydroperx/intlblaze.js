@@ -11,10 +11,10 @@ That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/c
 
 ## Getting Started
 
-Install dependency using [Bun](https://bun.sh):
+Install dependency:
 
 ```sh
-bunx jsr add @hydroper/fluent
+npx jsr add @hydroper/fluent
 ```
 
 Example TypeScript:
