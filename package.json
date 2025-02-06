@@ -1,6 +1,6 @@
 {
   "name": "@hydroper/fluent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Work with Fluent Project translation lists.",
   "main": "src/index.ts",
   "scripts": {
