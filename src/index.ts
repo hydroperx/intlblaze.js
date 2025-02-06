@@ -269,6 +269,14 @@ export class FluentBox {
                 }
             }
         }
+        if (this._defaultLocale !== null)
+        {
+            const nextLocale = this._defaultLocale.toString();
+            if (locale.toLowerCase() !== nextLocale.toLowerCase())
+            {
+                return this._getMessageByLocale(id, nextLocale, args, errors);
+            }
+        }
         return null;
     } // _getMessageByLocale
 
@@ -293,6 +301,14 @@ export class FluentBox {
                 if (this._hasMessageByLocale(id, fl)) {
                     return true;
                 }
+            }
+        }
+        if (this._defaultLocale !== null)
+        {
+            const nextLocale = this._defaultLocale.toString();
+            if (locale.toLowerCase() !== nextLocale.toLowerCase())
+            {
+                return this._hasMessageByLocale(id, nextLocale);
             }
         }
         return false;
