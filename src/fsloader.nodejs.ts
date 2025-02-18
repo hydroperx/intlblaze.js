@@ -5,12 +5,12 @@ import type { FluentBox } from ".";
 import { FluentBundle } from "@fluent/bundle";
 
 export default function loader(self: FluentBox, locale: Intl.Locale, localeAsStr: string, bundle: FluentBundle): Promise<[string, FluentBundle]> {
-    for (let fileName of self._assetsFiles) {
+    for (let fileName of self._files) {
         let localePathComp = self._localeToPathComponents.get(localeAsStr);
         if (localePathComp === undefined) {
             throw new Error(`Fallback is not a supported locale: ${localeAsStr}`);
         }
-        let resPath = `${self._assetsSource}/${localePathComp}/${fileName}.ftl`;
+        let resPath = `${self._source}/${localePathComp}/${fileName}.ftl`;
         try {
             let source = fs.readFileSync(path.resolve(resPath), 'utf8');
             addFTLBundleResource(fileName, source, bundle);

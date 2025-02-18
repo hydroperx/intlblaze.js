@@ -1,4 +1,4 @@
-import fileSystemLoader from "./fileSystemLoader.nodejs";
+import fsloader from "./fsloader.nodejs";
 import httpLoader from "./httpLoader";
 import { FluentBundle, FluentVariable } from "@fluent/bundle";
 
@@ -10,25 +10,25 @@ export class FluentBox {
 
     // Maps a locale identifier String to its equivalent path component.
     // The string mapped depends in how the
-    // FluentBox object was constructed. If the `supportedLocales` option
+    // FluentBox object was constructed. If the `locales` option
     // contains "en-us", then `_localeToPathComponents.get(new Intl.Locale("en-US").toString())` returns "en-us".
     // When FTLs are loaded, this component is appended to the URL or file path;
     // for example, `"res/lang/en-us"`.
     /** @hidden */
     _localeToPathComponents: Map<string, string> = new Map;
 
-    private _supportedLocales: Set<string> = new Set;
+    private _locales: Set<string> = new Set;
     private _defaultLocale: Intl.Locale | null = null;
     private _fallbacks: Map<string, string[]> = new Map;
     /** @hidden */
     _assets: Map<string, FluentBundle> = new Map;
     /** @hidden */
-    _assetsSource: string = '';
+    _source: string = '';
     /** @hidden */
-    _assetsFiles: string[] = [];
+    _files: string[] = [];
     private _bundleInitializers: BundleInitializer[] = [];
-    private _cleanUnusedAssets: boolean = true;
-    private _loadMethod: "http" | "fileSystem" = "http";
+    private _clean: boolean = true;
+    private _method: "http" | "fileSystem" = "http";
 
     private static _parseLocaleOrThrow(s: string | Intl.Locale) {
         try {
@@ -48,13 +48,13 @@ export class FluentBox {
         if (typeof options !== 'object') {
             throw new Error('Invalid options argument');
         }
-        if (!(options.supportedLocales instanceof Array)) {
-            throw new Error('options.supportedLocales must be an Array');
+        if (!(options.locales instanceof Array)) {
+            throw new Error('options.locales must be an Array');
         }
-        for (let unparsedLocale of options.supportedLocales) {
+        for (let unparsedLocale of options.locales) {
             let parsedLocale = FluentBox._parseLocaleOrThrow(unparsedLocale);
             this._localeToPathComponents.set(parsedLocale.toString(), unparsedLocale);
-            this._supportedLocales.add(parsedLocale.toString());
+            this._locales.add(parsedLocale.toString());
         }
         let fallbacks = options.fallbacks || {};
         for (let fallbackUnparsedLocale in fallbacks) {
@@ -74,26 +74,26 @@ export class FluentBox {
             throw new Error('options.defaultLocale must be a String');
         }
         this._defaultLocale = FluentBox._parseLocaleOrThrow(options.defaultLocale);
-        if (typeof options.assetSource !== 'string') {
-            throw new Error('options.assetSource must be a String');
+        if (typeof options.source !== 'string') {
+            throw new Error('options.source must be a String');
         }
-        this._assetsSource = String(options.assetSource);
-        if (!(options.assetFiles instanceof Array)) {
-            throw new Error('options.assetFiles must be an Array');
+        this._source = String(options.source);
+        if (!(options.files instanceof Array)) {
+            throw new Error('options.files must be an Array');
         }
-        this._assetsFiles = [];
-        for (let fileName of options.assetFiles) {
-            this._assetsFiles.push(fileName);
+        this._files = [];
+        for (let fileName of options.files) {
+            this._files.push(fileName);
         }
-        if (typeof options.cleanUnusedAssets !== 'boolean') {
-            throw new Error('options.cleanUnusedAssets must be a Boolean');
+        if (typeof options.clean !== 'boolean') {
+            throw new Error('options.clean must be a Boolean');
         }
-        this._cleanUnusedAssets = !!options.cleanUnusedAssets;
-        if (['http', 'fileSystem'].indexOf(options.loadMethod) === -1)
+        this._clean = !!options.clean;
+        if (['http', 'fileSystem'].indexOf(options.method) === -1)
         {
-            throw new Error('options.loadMethod must be one of ["http", "fileSystem"]');
+            throw new Error('options.method must be one of ["http", "fileSystem"]');
         }
-        this._loadMethod = options.loadMethod;
+        this._method = options.method;
     } // FluentBox constructor
 
     /**
@@ -107,9 +107,9 @@ export class FluentBox {
      * Returns a set of supported locales, reflecting
      * the ones that were specified when constructing the `FluentBox` object.
      */
-    get supportedLocales(): Set<Intl.Locale> {
+    get locales(): Set<Intl.Locale> {
         let r: Set<Intl.Locale> = new Set;
-        for (let v of this._supportedLocales) {
+        for (let v of this._locales) {
             r.add(new Intl.Locale(v));
         }
         return r;
@@ -121,7 +121,7 @@ export class FluentBox {
      * otherwise `false`.
      */
     supportsLocale(argument: Intl.Locale | string): boolean {
-        return this._supportedLocales.has(argument.toString());
+        return this._locales.has(argument.toString());
     }
 
     /**
@@ -182,7 +182,7 @@ export class FluentBox {
                 .all(Array.from(toLoad).map(a => self._loadSingleLocale(a)))
                 .then(res => {
                     // res : [string, FluentBundle][]
-                    if (self._cleanUnusedAssets) {
+                    if (self._clean) {
                         self._assets.clear();
                     }
 
@@ -209,8 +209,8 @@ export class FluentBox {
         let localeAsStr = locale.toString();
         let bundle = new FluentBundle(localeAsStr);
 
-        if (this._loadMethod == 'fileSystem') {
-            return fileSystemLoader(self, locale, localeAsStr, bundle);
+        if (this._method == 'fileSystem') {
+            return fsloader(self, locale, localeAsStr, bundle);
         } else {
             return httpLoader(self, locale, localeAsStr, bundle);
         }
@@ -322,27 +322,32 @@ export class FluentBox {
         let r = new FluentBox(FluentBox._PRIVATE_CTOR);
         r._currentLocale = this._currentLocale;
         r._localeToPathComponents = this._localeToPathComponents;
-        r._supportedLocales = this._supportedLocales;
+        r._locales = this._locales;
         r._defaultLocale = this._defaultLocale;
         r._fallbacks = this._fallbacks;
         r._bundleInitializers = this._bundleInitializers;
         r._assets = this._assets;
-        r._assetsSource = this._assetsSource;
-        r._assetsFiles = this._assetsFiles;
-        r._cleanUnusedAssets = this._cleanUnusedAssets;
-        r._loadMethod = this._loadMethod;
+        r._source = this._source;
+        r._files = this._files;
+        r._clean = this._clean;
+        r._method = this._method;
         return r;
     }
 }
 
 export type FluentBoxOptions = {
-    supportedLocales: string[];
+    locales: string[];
     fallbacks?: Record<string, string[]>;
     defaultLocale: string;
-    assetSource: string;
-    assetFiles: string[];
-    cleanUnusedAssets: boolean;
-    loadMethod: "http" | "fileSystem";
+    source: string;
+    files: string[];
+    /**
+     * Whether to automatically clean unused assets or not. Setting this to `false` is ideal for servers.
+     *
+     * @default false
+     */
+    clean: boolean;
+    method: "http" | "fileSystem";
 };
 
 export type BundleInitializer = (locale: Intl.Locale, bundle: FluentBundle) => void;

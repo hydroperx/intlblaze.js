@@ -29,21 +29,21 @@ class Main
     constructor()
     {
         this.fluentBox = new FluentBox({
-            supportedLocales: ["en"],
+            locales: ["en"],
             fallbacks: {
                 // "pt-BR": ["en"],
             },
             defaultLocale: "en",
 
-            assetSource: "res/lang",
-            assetFiles: [
+            source: "res/lang",
+            files: [
                 "_", // res/lang/LANG/_.ftl
             ],
 
-            cleanUnusedAssets: true,
+            clean: true,
 
             // specify either 'http' or 'fileSystem' as load method
-            loadMethod: "fileSystem",
+            method: "fileSystem",
         });
         this.initialize();
     }
@@ -71,6 +71,6 @@ hello = Hello, { $to }!
 
 ## Server Usage
 
-Usually, for server applications, set the `cleanUnusedAssets` option to `false` and clone the `FluentBox` object when necessary by invoking `fluentBox.clone();` to change the current locale.
+Usually, for server applications, set the `clean` option to `false` and clone the `FluentBox` object when necessary by invoking `fluentBox.clone();` to change the current locale.
 
 The `fluentBox.clone();` method clones the `FluentBox` object, but still re-uses resources from the original object, avoiding resource duplication.

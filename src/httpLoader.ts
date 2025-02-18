@@ -5,13 +5,13 @@ import { FluentBundle } from "@fluent/bundle";
 
 export default function loader(self: FluentBox, locale: Intl.Locale, localeAsStr: string, bundle: FluentBundle): Promise<[string, FluentBundle]> {
     return Promise.all(
-        self._assetsFiles.slice(0).map(
+        self._files.slice(0).map(
             fileName => {
                 let localePathComp = self._localeToPathComponents.get(localeAsStr);
                 if (localePathComp === undefined) {
                     throw new Error(`Fallback is not a supported locale: ${localeAsStr}`);
                 }
-                let resPath = `${self._assetsSource}/${localePathComp}/${fileName}.ftl`;
+                let resPath = `${self._source}/${localePathComp}/${fileName}.ftl`;
                 return new Promise((resolve, reject) => {
                     axios({
                         method: 'get',
