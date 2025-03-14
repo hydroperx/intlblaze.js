@@ -1,10 +1,5 @@
 # Fluent Project rapid integration
 
-<p align="center">
-  <a href="https://jsr.io/@hydroper/fluent"><img src="https://img.shields.io/jsr/v/@hydroper/fluent"></a>
-  <a href="https://jsr.io/@hydroper/fluent/doc"><img src="https://img.shields.io/badge/API%20Documentation-gray"></a>
-</p>
-
 Rapidly support Fluent Project's translation in your web application. Both client-side and server-side applications are supported.
 
 That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/com.hydroper.ftl).
@@ -14,13 +9,13 @@ That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/c
 Install dependency:
 
 ```sh
-npx jsr add @hydroper/fluent
+npm install com.hydroper.fluent
 ```
 
 Example TypeScript:
 
 ```ts
-import { FluentBox } from "@hydroper/fluent";
+import { FluentBox } from "com.hydroper.fluent";
 
 class Main
 {
