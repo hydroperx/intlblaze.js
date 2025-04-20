@@ -1,5 +1,5 @@
 {
-  "name": "com.hydroper.fluent",
+  "name": "@hydroper/fluent",
   "version": "1.0.0",
   "description": "Work with Fluent Project translation lists.",
   "main": "src/index.ts",
@@ -19,5 +19,5 @@
   "devDependencies": {
     "@types/node": "^22.13.0"
   },
-  "repository": "https://github.com/realhydroper/tsfluent"
+  "repository": "https://github.com/realhydroper/fluent"
 }
