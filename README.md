@@ -9,13 +9,13 @@ That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/c
 Install dependency:
 
 ```sh
-npm install @hydroper/fluent
+npm install @hydroperx/fluent
 ```
 
 Example TypeScript:
 
 ```ts
-import { FluentBox } from "@hydroper/fluent";
+import { FluentBox } from "@hydroperx/fluent";
 
 class Main
 {

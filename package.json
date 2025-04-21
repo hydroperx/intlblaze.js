@@ -1,5 +1,5 @@
 {
-  "name": "@hydroper/fluent",
+  "name": "@hydroperx/fluent",
   "version": "1.0.0",
   "description": "Work with Fluent Project translation lists.",
   "main": "src/index.ts",
