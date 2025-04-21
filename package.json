@@ -19,5 +19,5 @@
   "devDependencies": {
     "@types/node": "^22.13.0"
   },
-  "repository": "https://github.com/realhydroper/fluent"
+  "repository": "https://github.com/hydroperx/fluent"
 }
