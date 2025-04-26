@@ -1,4 +1,4 @@
-import fsloader from "./fsloader.nodejs";
+import fsloader from "./fsLoader";
 import httpLoader from "./httpLoader";
 import { FluentBundle, FluentVariable } from "@fluent/bundle";
 

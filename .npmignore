@@ -1,0 +1,2 @@
+# do not exclude TypeScript compiler output
+!/dist

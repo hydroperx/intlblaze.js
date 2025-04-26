@@ -5,6 +5,10 @@ import type { FluentBox } from ".";
 import { FluentBundle } from "@fluent/bundle";
 
 export default function loader(self: FluentBox, locale: Intl.Locale, localeAsStr: string, bundle: FluentBundle): Promise<[string, FluentBundle]> {
+    if (typeof window === "object") {
+        console.error(`File system Fluent Translation Lists are not supported in the browser.`);
+        return Promise.reject(undefined);
+    }
     for (let fileName of self._files) {
         let localePathComp = self._localeToPathComponents.get(localeAsStr);
         if (localePathComp === undefined) {

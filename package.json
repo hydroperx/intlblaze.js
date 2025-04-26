@@ -1,16 +1,24 @@
 {
   "name": "@hydroperx/fluent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Work with Fluent Project translation lists.",
-  "main": "src/index.ts",
+  "files": ["/dist"],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "browser": {
-    "src/fsloader.nodejs.ts": "src/fsloader.browser.ts"
+    "fs": false,
+    "path": false
   },
   "keywords": ["fluent", "fluent-project", "ftl"],
-  "author": "hydroper",
+  "author": "hydroper <hydroperfox@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
     "@fluent/bundle": "^0.18.0",
