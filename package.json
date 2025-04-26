@@ -1,6 +1,6 @@
 {
   "name": "@hydroperx/fluent",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Work with Fluent Project translation lists.",
   "files": ["/dist"],
   "scripts": {
@@ -9,8 +9,8 @@
   },
   "exports": {
     ".": {
-      "default": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
   },
   "browser": {
