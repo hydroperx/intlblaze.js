@@ -5,7 +5,7 @@ import { FluentBundle, FluentVariable } from "@fluent/bundle";
 /**
  * Manages Fluent Project translation lists (FTL).
  */
-export class FluentBox {
+export class FluentBox extends EventTarget {
   private _currentLocale: Intl.Locale | null = null;
 
   // Maps a locale identifier String to its equivalent path component.
@@ -17,6 +17,7 @@ export class FluentBox {
   /** @hidden */
   _localeToPathComponents: Map<string, string> = new Map();
 
+  private _status: FluentBoxStatus = "ok";
   private _locales: Set<string> = new Set();
   private _defaultLocale: Intl.Locale | null = null;
   private _fallbacks: Map<string, string[]> = new Map();
@@ -42,6 +43,7 @@ export class FluentBox {
   static _PRIVATE_CTOR: any = {};
 
   constructor(options: FluentBoxOptions) {
+    super();
     if (options === FluentBox._PRIVATE_CTOR) {
       return;
     }
@@ -159,6 +161,10 @@ export class FluentBox {
     return [];
   }
 
+  get status(): FluentBoxStatus {
+    return this._status;
+  }
+
   /**
    * Attempts to load a locale and its fallbacks.
    * If the locale argument is specified, it is loaded.
@@ -177,13 +183,14 @@ export class FluentBox {
       throw new Error(`Unsupported locale: ${newLocale.toString()}`);
     }
     let self = this;
+    this._status = "loading";
     return new Promise((resolve, reject) => {
       let toLoad: Set<Intl.Locale> = new Set([newLocale]);
       self._enumerateFallbacksToSet(newLocale.toString(), toLoad);
 
       let newAssets = new Map();
       Promise.all(Array.from(toLoad).map((a) => self._loadSingleLocale(a)))
-        .then((res) => {
+        .then(res => {
           // res : [string, FluentBundle][]
           if (self._clean) {
             self._assets.clear();
@@ -198,9 +205,13 @@ export class FluentBox {
             bundleInit(newLocale, self._assets.get(newLocale.toString())!);
           }
 
+          this._status = "ok";
+          this.dispatchEvent(new Event("load"));
           resolve(true);
         })
-        .catch((_) => {
+        .catch(_ => {
+          this._status = "error";
+          this.dispatchEvent(new Event("load"));
           resolve(false);
         });
     });
@@ -331,6 +342,34 @@ export class FluentBox {
   }
 
   /**
+   * Shortcut for the `addEventListener()` method.
+   */
+  public on<T extends keyof FluentBoxEventMap>(
+    type: T,
+    listener: (event: (FluentBoxEventMap[T] extends Event ? FluentBoxEventMap[T] : never)) => void,
+    options?: boolean | AddEventListenerOptions,
+  ): void;
+  public on(type: string, listener: Function, options?: boolean | AddEventListenerOptions): void;
+
+  public on(type: string, listener: Function, options?: boolean | AddEventListenerOptions) {
+    this.addEventListener(type as any, listener as any, options);
+  }
+
+  /**
+   * Shortcut for the `removeEventListener()` method.
+   */
+  public off<T extends keyof FluentBoxEventMap>(
+    type: T,
+    listener: (event: (FluentBoxEventMap[T] extends Event ? FluentBoxEventMap[T] : never)) => void,
+    options?: boolean | EventListenerOptions,
+  ): void;
+  public off(type: string, listener: Function, options?: boolean | EventListenerOptions): void;
+
+  public off(type: string, listener: Function, options?: boolean | EventListenerOptions) {
+    this.removeEventListener(type as any, listener as any, options);
+  }
+
+  /**
    * Clones the `FluentBox` object, but returning an object that is
    * in sync with the original `FluentBox` object.
    */
@@ -370,3 +409,15 @@ export type BundleInitializer = (
   locale: Intl.Locale,
   bundle: FluentBundle,
 ) => void;
+
+/**
+ * Represents the current status of a `FluentBox` instance.
+ */
+export type FluentBoxStatus = "ok" | "loading" | "error";
+
+/**
+ * Event types dispatched by `FluentBox`.
+ */
+export type FluentBoxEventMap = {
+  load: Event,
+};

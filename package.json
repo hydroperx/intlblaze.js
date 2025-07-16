@@ -1,7 +1,7 @@
 {
   "name": "@hydroperx/fluent",
-  "version": "1.0.2",
-  "description": "Work with Fluent Project translation lists.",
+  "version": "1.1.0",
+  "description": "Work with Project Fluent translation lists.",
   "files": ["/dist"],
   "scripts": {
     "build": "tsc",

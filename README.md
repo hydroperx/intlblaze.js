@@ -17,12 +17,10 @@ Example TypeScript:
 ```ts
 import { FluentBox } from "@hydroperx/fluent";
 
-class Main
-{
+class Main {
     fluentBox: FluentBox;
 
-    constructor()
-    {
+    constructor() {
         this.fluentBox = new FluentBox({
             locales: ["en"],
             fallbacks: {
@@ -43,10 +41,8 @@ class Main
         this.initialize();
     }
 
-    async initialize()
-    {
-        if (!(await this.fluentBox.load()))
-        {
+    async initialize() {
+        if (!(await this.fluentBox.load())) {
             // failed to load
             return;
         }
