@@ -211,7 +211,7 @@ export class FluentBox extends EventTarget {
         })
         .catch(_ => {
           this._status = "error";
-          this.dispatchEvent(new Event("load"));
+          this.dispatchEvent(new Event("error"));
           resolve(false);
         });
     });
@@ -419,5 +419,12 @@ export type FluentBoxStatus = "ok" | "loading" | "error";
  * Event types dispatched by `FluentBox`.
  */
 export type FluentBoxEventMap = {
+  /**
+   * Dispatched after successfully loading resources.
+   */
   load: Event,
+  /**
+   * Dispatched after failing to load resources.
+   */
+  error: Event,
 };
