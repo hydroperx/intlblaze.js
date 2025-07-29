@@ -3,21 +3,22 @@ import httpLoader from "./httpLoader";
 import { FluentBundle, FluentVariable } from "@fluent/bundle";
 
 /**
- * Manages Fluent Project translation lists (FTL).
+ * Manages Project Fluent translation lists (FTL) and translate
+ * messages.
  */
-export class FluentBox extends EventTarget {
+export class Tradur extends EventTarget {
   private _currentLocale: Intl.Locale | null = null;
 
   // Maps a locale identifier String to its equivalent path component.
   // The string mapped depends in how the
-  // FluentBox object was constructed. If the `locales` option
+  // Tradur object was constructed. If the `locales` option
   // contains "en-us", then `_localeToPathComponents.get(new Intl.Locale("en-US").toString())` returns "en-us".
   // When FTLs are loaded, this component is appended to the URL or file path;
   // for example, `"res/lang/en-us"`.
   /** @hidden */
   _localeToPathComponents: Map<string, string> = new Map();
 
-  private _status: FluentBoxStatus = "ok";
+  private _status: TradurStatus = "ok";
   private _locales: Set<string> = new Set();
   private _defaultLocale: Intl.Locale | null = null;
   private _fallbacks: Map<string, string[]> = new Map();
@@ -42,65 +43,65 @@ export class FluentBox extends EventTarget {
   /** @hidden */
   static _PRIVATE_CTOR: any = {};
 
-  constructor(options: FluentBoxOptions) {
+  constructor(params: TradurParams) {
     super();
-    if (options === FluentBox._PRIVATE_CTOR) {
+    if (params === Tradur._PRIVATE_CTOR) {
       return;
     }
-    if (typeof options !== "object") {
-      throw new Error("Invalid options argument");
+    if (typeof params !== "object") {
+      throw new Error("Invalid params argument");
     }
-    if (!(options.locales instanceof Array)) {
-      throw new Error("options.locales must be an Array");
+    if (!(params.locales instanceof Array)) {
+      throw new Error("params.locales must be an Array");
     }
-    for (let unparsedLocale of options.locales) {
-      let parsedLocale = FluentBox._parseLocaleOrThrow(unparsedLocale);
+    for (let unparsedLocale of params.locales) {
+      let parsedLocale = Tradur._parseLocaleOrThrow(unparsedLocale);
       this._localeToPathComponents.set(parsedLocale.toString(), unparsedLocale);
       this._locales.add(parsedLocale.toString());
     }
-    let fallbacks = options.fallbacks || {};
+    let fallbacks = params.fallbacks || {};
     for (let fallbackUnparsedLocale in fallbacks) {
-      let fallbackParsedLocale = FluentBox._parseLocaleOrThrow(
+      let fallbackParsedLocale = Tradur._parseLocaleOrThrow(
         fallbackUnparsedLocale,
       );
       let fallbackArray = fallbacks[fallbackUnparsedLocale];
       if (!fallbackArray) {
-        throw new Error("options.fallbacks must map Locales to Arrays");
+        throw new Error("params.fallbacks must map Locales to Arrays");
       }
       this._fallbacks.set(
         fallbackParsedLocale.toString(),
         fallbackArray.map((a) => {
           if (typeof a !== "string") {
-            throw new Error("options.fallbacks object is malformed");
+            throw new Error("params.fallbacks object is malformed");
           }
-          return FluentBox._parseLocaleOrThrow(a).toString();
+          return Tradur._parseLocaleOrThrow(a).toString();
         }),
       );
     }
-    if (typeof options.defaultLocale !== "string") {
-      throw new Error("options.defaultLocale must be a String");
+    if (typeof params.defaultLocale !== "string") {
+      throw new Error("params.defaultLocale must be a String");
     }
-    this._defaultLocale = FluentBox._parseLocaleOrThrow(options.defaultLocale);
-    if (typeof options.source !== "string") {
-      throw new Error("options.source must be a String");
+    this._defaultLocale = Tradur._parseLocaleOrThrow(params.defaultLocale);
+    if (typeof params.source !== "string") {
+      throw new Error("params.source must be a String");
     }
-    this._source = String(options.source);
-    if (!(options.files instanceof Array)) {
-      throw new Error("options.files must be an Array");
+    this._source = String(params.source);
+    if (!(params.files instanceof Array)) {
+      throw new Error("params.files must be an Array");
     }
     this._files = [];
-    for (let fileName of options.files) {
+    for (let fileName of params.files) {
       this._files.push(fileName);
     }
-    if (typeof options.clean !== "boolean") {
-      throw new Error("options.clean must be a Boolean");
+    if (typeof params.clean !== "boolean") {
+      throw new Error("params.clean must be a Boolean");
     }
-    this._clean = !!options.clean;
-    if (["http", "fileSystem"].indexOf(options.method) === -1) {
-      throw new Error('options.method must be one of ["http", "fileSystem"]');
+    this._clean = !!params.clean;
+    if (["http", "fileSystem"].indexOf(params.method) === -1) {
+      throw new Error('params.method must be one of ["http", "fileSystem"]');
     }
-    this._method = options.method;
-  } // FluentBox constructor
+    this._method = params.method;
+  } // Tradur constructor
 
   /**
    * Adds a bundle initializer. This allows defining custom functions and more.
@@ -111,7 +112,7 @@ export class FluentBox extends EventTarget {
 
   /**
    * Returns a set of supported locales, reflecting
-   * the ones that were specified when constructing the `FluentBox` object.
+   * the ones that were specified when constructing the `Tradur` object.
    */
   get locales(): Set<Intl.Locale> {
     let r: Set<Intl.Locale> = new Set();
@@ -123,7 +124,7 @@ export class FluentBox extends EventTarget {
 
   /**
    * Returns `true` if the locale is one of the supported locales
-   * that were specified when constructing the `FluentBox` object,
+   * that were specified when constructing the `Tradur` object,
    * otherwise `false`.
    */
   supportsLocale(argument: Intl.Locale | string): boolean {
@@ -161,7 +162,7 @@ export class FluentBox extends EventTarget {
     return [];
   }
 
-  get status(): FluentBoxStatus {
+  get status(): TradurStatus {
     return this._status;
   }
 
@@ -257,7 +258,7 @@ export class FluentBox extends EventTarget {
   /**
    * Retrieves message and formats it. Returns `null` if undefined.
    */
-  getMessage(
+  get(
     id: string,
     args: undefined | Record<string, FluentVariable> = undefined,
     errors: null | Error[] = null,
@@ -265,7 +266,7 @@ export class FluentBox extends EventTarget {
     if (!this._currentLocale) {
       return null;
     }
-    return this._getMessageByLocale(
+    return this._getByLocale(
       id,
       this._currentLocale.toString(),
       args,
@@ -273,7 +274,7 @@ export class FluentBox extends EventTarget {
     );
   }
 
-  private _getMessageByLocale(
+  private _getByLocale(
     id: string,
     locale: string,
     args: undefined | Record<string, FluentVariable>,
@@ -292,7 +293,7 @@ export class FluentBox extends EventTarget {
     let fallbacks = this._fallbacks.get(locale);
     if (fallbacks) {
       for (let fl of fallbacks) {
-        let r = this._getMessageByLocale(id, fl, args, errors);
+        let r = this._getByLocale(id, fl, args, errors);
         if (r !== null) {
           return r;
         }
@@ -301,22 +302,22 @@ export class FluentBox extends EventTarget {
     if (this._defaultLocale !== null) {
       const nextLocale = this._defaultLocale.toString();
       if (locale.toLowerCase() !== nextLocale.toLowerCase()) {
-        return this._getMessageByLocale(id, nextLocale, args, errors);
+        return this._getByLocale(id, nextLocale, args, errors);
       }
     }
     return null;
-  } // _getMessageByLocale
+  } // _getByLocale
 
   /**
    * Determines if a message is defined.
    */
-  hasMessage(id: string): boolean {
+  has(id: string): boolean {
     return this._currentLocale
-      ? this._hasMessageByLocale(id, this._currentLocale.toString())
+      ? this._hasByLocale(id, this._currentLocale.toString())
       : false;
   }
 
-  private _hasMessageByLocale(id: string, locale: string): boolean {
+  private _hasByLocale(id: string, locale: string): boolean {
     let assets = this._assets.get(locale);
     if (assets) {
       let msg = assets.getMessage(id);
@@ -327,7 +328,7 @@ export class FluentBox extends EventTarget {
     let fallbacks = this._fallbacks.get(locale);
     if (fallbacks) {
       for (let fl of fallbacks) {
-        if (this._hasMessageByLocale(id, fl)) {
+        if (this._hasByLocale(id, fl)) {
           return true;
         }
       }
@@ -335,7 +336,7 @@ export class FluentBox extends EventTarget {
     if (this._defaultLocale !== null) {
       const nextLocale = this._defaultLocale.toString();
       if (locale.toLowerCase() !== nextLocale.toLowerCase()) {
-        return this._hasMessageByLocale(id, nextLocale);
+        return this._hasByLocale(id, nextLocale);
       }
     }
     return false;
@@ -344,37 +345,37 @@ export class FluentBox extends EventTarget {
   /**
    * Shortcut for the `addEventListener()` method.
    */
-  public on<T extends keyof FluentBoxEventMap>(
+  public on<T extends keyof TradurEventMap>(
     type: T,
-    listener: (event: (FluentBoxEventMap[T] extends Event ? FluentBoxEventMap[T] : never)) => void,
-    options?: boolean | AddEventListenerOptions,
+    listener: (event: (TradurEventMap[T] extends Event ? TradurEventMap[T] : never)) => void,
+    params?: boolean | AddEventListenerOptions,
   ): void;
-  public on(type: string, listener: Function, options?: boolean | AddEventListenerOptions): void;
+  public on(type: string, listener: Function, params?: boolean | AddEventListenerOptions): void;
 
-  public on(type: string, listener: Function, options?: boolean | AddEventListenerOptions) {
-    this.addEventListener(type as any, listener as any, options);
+  public on(type: string, listener: Function, params?: boolean | AddEventListenerOptions) {
+    this.addEventListener(type as any, listener as any, params);
   }
 
   /**
    * Shortcut for the `removeEventListener()` method.
    */
-  public off<T extends keyof FluentBoxEventMap>(
+  public off<T extends keyof TradurEventMap>(
     type: T,
-    listener: (event: (FluentBoxEventMap[T] extends Event ? FluentBoxEventMap[T] : never)) => void,
-    options?: boolean | EventListenerOptions,
+    listener: (event: (TradurEventMap[T] extends Event ? TradurEventMap[T] : never)) => void,
+    params?: boolean | EventListenerOptions,
   ): void;
-  public off(type: string, listener: Function, options?: boolean | EventListenerOptions): void;
+  public off(type: string, listener: Function, params?: boolean | EventListenerOptions): void;
 
-  public off(type: string, listener: Function, options?: boolean | EventListenerOptions) {
-    this.removeEventListener(type as any, listener as any, options);
+  public off(type: string, listener: Function, params?: boolean | EventListenerOptions) {
+    this.removeEventListener(type as any, listener as any, params);
   }
 
   /**
-   * Clones the `FluentBox` object, but returning an object that is
-   * in sync with the original `FluentBox` object.
+   * Clones the `Tradur` object, but returning an object that is
+   * in sync with the original `Tradur` object.
    */
-  clone(): FluentBox {
-    let r = new FluentBox(FluentBox._PRIVATE_CTOR);
+  clone(): Tradur {
+    let r = new Tradur(Tradur._PRIVATE_CTOR);
     r._currentLocale = this._currentLocale;
     r._localeToPathComponents = this._localeToPathComponents;
     r._locales = this._locales;
@@ -390,7 +391,7 @@ export class FluentBox extends EventTarget {
   }
 }
 
-export type FluentBoxOptions = {
+export type TradurParams = {
   locales: string[];
   fallbacks?: Record<string, string[]>;
   defaultLocale: string;
@@ -411,14 +412,14 @@ export type BundleInitializer = (
 ) => void;
 
 /**
- * Represents the current status of a `FluentBox` instance.
+ * Represents the current status of a `Tradur` instance.
  */
-export type FluentBoxStatus = "ok" | "loading" | "error";
+export type TradurStatus = "ok" | "loading" | "error";
 
 /**
- * Event types dispatched by `FluentBox`.
+ * Event types dispatched by `Tradur`.
  */
-export type FluentBoxEventMap = {
+export type TradurEventMap = {
   /**
    * Dispatched after successfully loading resources.
    */

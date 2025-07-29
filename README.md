@@ -1,6 +1,10 @@
-# Fluent Project rapid integration
+# Tradur
 
-Rapidly support Fluent Project's translation in your web application. Both client-side and server-side applications are supported.
+<p align="center">
+  <a href="./docs/globals.md"><img src="https://img.shields.io/badge/TypeScript%20API%20Documentation-gray"></a>
+</p>
+
+Rapidly support [Project Fluent](https://projectfluent.org) translation in your web application. Both client-side and server-side applications are supported.
 
 That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/com.hydroper.ftl).
 
@@ -9,19 +13,19 @@ That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/c
 Install dependency:
 
 ```sh
-npm install @hydroperx/fluent
+npm install @hydroperx/tradur
 ```
 
 Example TypeScript:
 
 ```ts
-import { FluentBox } from "@hydroperx/fluent";
+import { Tradur } from "@hydroperx/tradur";
 
 class Main {
-    fluentBox: FluentBox;
+    tradur: Tradur;
 
     constructor() {
-        this.fluentBox = new FluentBox({
+        this.tradur = new Tradur({
             locales: ["en"],
             fallbacks: {
                 // "pt-BR": ["en"],
@@ -42,12 +46,12 @@ class Main {
     }
 
     async initialize() {
-        if (!(await this.fluentBox.load())) {
+        if (!(await this.tradur.load())) {
             // failed to load
             return;
         }
 
-        console.log(this.fluentBox.getMessage("hello", { to: "Diantha" }));
+        console.log(this.tradur.get("hello", { to: "Diantha" }));
     }
 }
 
@@ -62,6 +66,6 @@ hello = Hello, { $to }!
 
 ## Server Usage
 
-Usually, for server applications, set the `clean` option to `false` and clone the `FluentBox` object when necessary by invoking `fluentBox.clone();` to change the current locale.
+Usually, for server applications, set the `clean` option to `false` and clone the `Tradur` object when necessary by invoking `tradur.clone();` to change the current locale.
 
-The `fluentBox.clone();` method clones the `FluentBox` object, but still re-uses resources from the original object, avoiding resource duplication.
+The `tradur.clone();` method clones the `Tradur` object, but still re-uses resources from the original object, avoiding resource duplication.

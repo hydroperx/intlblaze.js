@@ -1,2 +1,5 @@
 # do not exclude TypeScript compiler output
 !/dist
+
+# do not include API documentation
+/docs

@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
 import { addFTLBundleResource } from "./bundleUtils";
-import type { FluentBox } from ".";
+import type { Tradur } from ".";
 import { FluentBundle } from "@fluent/bundle";
 
 export default function loader(
-  self: FluentBox,
+  self: Tradur,
   locale: Intl.Locale,
   localeAsStr: string,
   bundle: FluentBundle,
