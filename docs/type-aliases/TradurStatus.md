@@ -8,6 +8,6 @@
 
 > **TradurStatus** = `"ok"` \| `"loading"` \| `"error"`
 
-Defined in: [src/index.ts:417](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L417)
+Defined in: [src/index.ts:424](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L424)
 
 Represents the current status of a `Tradur` instance.

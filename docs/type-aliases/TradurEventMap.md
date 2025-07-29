@@ -8,7 +8,7 @@
 
 > **TradurEventMap** = `object`
 
-Defined in: [src/index.ts:422](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L422)
+Defined in: [src/index.ts:429](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L429)
 
 Event types dispatched by `Tradur`.
 
@@ -18,7 +18,7 @@ Event types dispatched by `Tradur`.
 
 > **error**: `Event`
 
-Defined in: [src/index.ts:430](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L430)
+Defined in: [src/index.ts:437](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L437)
 
 Dispatched after failing to load resources.
 
@@ -28,6 +28,6 @@ Dispatched after failing to load resources.
 
 > **load**: `Event`
 
-Defined in: [src/index.ts:426](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L426)
+Defined in: [src/index.ts:433](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L433)
 
 Dispatched after successfully loading resources.

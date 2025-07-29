@@ -162,6 +162,10 @@ export class Tradur extends EventTarget {
     return [];
   }
 
+  /**
+   * Returns the status of the `Tradur` instance
+   * (e.g., `"ok"`, `"loading"` or `"error"`).
+   */
   get status(): TradurStatus {
     return this._status;
   }
@@ -174,6 +178,9 @@ export class Tradur extends EventTarget {
    *
    * If any resource fails to load, the returned `Promise`
    * resolves to `false`, otherwise `true`.
+   * 
+   * Also dispatches either the `load` or `error` event,
+   * when loading is completed.
    */
   load(newLocale: Intl.Locale | null = null): Promise<boolean> {
     newLocale ||= this._defaultLocale;

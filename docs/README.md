@@ -2,10 +2,10 @@
 
 ***
 
-# Fluent Project rapid integration
+# Tradur
 
 <p align="center">
-  <a href="./docs/globals.md"><img src="https://img.shields.io/badge/TypeScript%20API%20Documentation-gray"></a>
+  <a href="_media/globals.md"><img src="https://img.shields.io/badge/TypeScript%20API%20Documentation-gray"></a>
 </p>
 
 Rapidly support [Project Fluent](https://projectfluent.org) translation in your web application. Both client-side and server-side applications are supported.

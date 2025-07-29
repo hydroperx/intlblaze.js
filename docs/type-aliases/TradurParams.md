@@ -8,7 +8,7 @@
 
 > **TradurParams** = `object`
 
-Defined in: [src/index.ts:394](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L394)
+Defined in: [src/index.ts:401](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L401)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [src/index.ts:394](https://github.com/hydroperx/tradur.js/blob/504cf
 
 > **clean**: `boolean`
 
-Defined in: [src/index.ts:405](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L405)
+Defined in: [src/index.ts:412](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L412)
 
 Whether to automatically clean unused assets or not. Setting this to `false` is ideal for servers.
 
@@ -32,7 +32,7 @@ false
 
 > **defaultLocale**: `string`
 
-Defined in: [src/index.ts:397](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L397)
+Defined in: [src/index.ts:404](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L404)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [src/index.ts:397](https://github.com/hydroperx/tradur.js/blob/504cf
 
 > `optional` **fallbacks**: `Record`\<`string`, `string`[]\>
 
-Defined in: [src/index.ts:396](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L396)
+Defined in: [src/index.ts:403](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L403)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [src/index.ts:396](https://github.com/hydroperx/tradur.js/blob/504cf
 
 > **files**: `string`[]
 
-Defined in: [src/index.ts:399](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L399)
+Defined in: [src/index.ts:406](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L406)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [src/index.ts:399](https://github.com/hydroperx/tradur.js/blob/504cf
 
 > **locales**: `string`[]
 
-Defined in: [src/index.ts:395](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L395)
+Defined in: [src/index.ts:402](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L402)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [src/index.ts:395](https://github.com/hydroperx/tradur.js/blob/504cf
 
 > **method**: `"http"` \| `"fileSystem"`
 
-Defined in: [src/index.ts:406](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L406)
+Defined in: [src/index.ts:413](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L413)
 
 ***
 
@@ -72,4 +72,4 @@ Defined in: [src/index.ts:406](https://github.com/hydroperx/tradur.js/blob/504cf
 
 > **source**: `string`
 
-Defined in: [src/index.ts:398](https://github.com/hydroperx/tradur.js/blob/504cfc9f9e948b27f45a2d391df370d482fcb719/src/index.ts#L398)
+Defined in: [src/index.ts:405](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L405)
