@@ -6,19 +6,19 @@ import { FluentBundle, FluentVariable } from "@fluent/bundle";
  * Manages Project Fluent translation lists (FTL) and translate
  * messages.
  */
-export class Tradur extends EventTarget {
+export class IntlBlaze extends EventTarget {
   private _currentLocale: Intl.Locale | null = null;
 
   // Maps a locale identifier String to its equivalent path component.
   // The string mapped depends in how the
-  // Tradur object was constructed. If the `locales` option
+  // IntlBlaze object was constructed. If the `locales` option
   // contains "en-us", then `_localeToPathComponents.get(new Intl.Locale("en-US").toString())` returns "en-us".
   // When FTLs are loaded, this component is appended to the URL or file path;
   // for example, `"res/lang/en-us"`.
   /** @hidden */
   _localeToPathComponents: Map<string, string> = new Map();
 
-  private _status: TradurStatus = "ok";
+  private _status: IntlBlazeStatus = "ok";
   private _locales: Set<string> = new Set();
   private _defaultLocale: Intl.Locale | null = null;
   private _fallbacks: Map<string, string[]> = new Map();
@@ -43,9 +43,9 @@ export class Tradur extends EventTarget {
   /** @hidden */
   static _PRIVATE_CTOR: any = {};
 
-  constructor(params: TradurParams) {
+  constructor(params: IntlBlazeParams) {
     super();
-    if (params === Tradur._PRIVATE_CTOR) {
+    if (params === IntlBlaze._PRIVATE_CTOR) {
       return;
     }
     if (typeof params !== "object") {
@@ -55,13 +55,13 @@ export class Tradur extends EventTarget {
       throw new Error("params.locales must be an Array");
     }
     for (let unparsedLocale of params.locales) {
-      let parsedLocale = Tradur._parseLocaleOrThrow(unparsedLocale);
+      let parsedLocale = IntlBlaze._parseLocaleOrThrow(unparsedLocale);
       this._localeToPathComponents.set(parsedLocale.toString(), unparsedLocale);
       this._locales.add(parsedLocale.toString());
     }
     let fallbacks = params.fallbacks || {};
     for (let fallbackUnparsedLocale in fallbacks) {
-      let fallbackParsedLocale = Tradur._parseLocaleOrThrow(
+      let fallbackParsedLocale = IntlBlaze._parseLocaleOrThrow(
         fallbackUnparsedLocale,
       );
       let fallbackArray = fallbacks[fallbackUnparsedLocale];
@@ -74,14 +74,14 @@ export class Tradur extends EventTarget {
           if (typeof a !== "string") {
             throw new Error("params.fallbacks object is malformed");
           }
-          return Tradur._parseLocaleOrThrow(a).toString();
+          return IntlBlaze._parseLocaleOrThrow(a).toString();
         }),
       );
     }
     if (typeof params.defaultLocale !== "string") {
       throw new Error("params.defaultLocale must be a String");
     }
-    this._defaultLocale = Tradur._parseLocaleOrThrow(params.defaultLocale);
+    this._defaultLocale = IntlBlaze._parseLocaleOrThrow(params.defaultLocale);
     if (typeof params.source !== "string") {
       throw new Error("params.source must be a String");
     }
@@ -101,7 +101,7 @@ export class Tradur extends EventTarget {
       throw new Error('params.method must be one of ["http", "fileSystem"]');
     }
     this._method = params.method;
-  } // Tradur constructor
+  } // IntlBlaze constructor
 
   /**
    * Adds a bundle initializer. This allows defining custom functions and more.
@@ -112,7 +112,7 @@ export class Tradur extends EventTarget {
 
   /**
    * Returns a set of supported locales, reflecting
-   * the ones that were specified when constructing the `Tradur` object.
+   * the ones that were specified when constructing the `IntlBlaze` object.
    */
   get locales(): Set<Intl.Locale> {
     let r: Set<Intl.Locale> = new Set();
@@ -124,7 +124,7 @@ export class Tradur extends EventTarget {
 
   /**
    * Returns `true` if the locale is one of the supported locales
-   * that were specified when constructing the `Tradur` object,
+   * that were specified when constructing the `IntlBlaze` object,
    * otherwise `false`.
    */
   supportsLocale(argument: Intl.Locale | string): boolean {
@@ -163,10 +163,10 @@ export class Tradur extends EventTarget {
   }
 
   /**
-   * Returns the status of the `Tradur` instance
+   * Returns the status of the `IntlBlaze` instance
    * (e.g., `"ok"`, `"loading"` or `"error"`).
    */
-  get status(): TradurStatus {
+  get status(): IntlBlazeStatus {
     return this._status;
   }
 
@@ -352,9 +352,9 @@ export class Tradur extends EventTarget {
   /**
    * Shortcut for the `addEventListener()` method.
    */
-  public on<T extends keyof TradurEventMap>(
+  public on<T extends keyof IntlBlazeEventMap>(
     type: T,
-    listener: (event: (TradurEventMap[T] extends Event ? TradurEventMap[T] : never)) => void,
+    listener: (event: (IntlBlazeEventMap[T] extends Event ? IntlBlazeEventMap[T] : never)) => void,
     params?: boolean | AddEventListenerOptions,
   ): void;
   public on(type: string, listener: Function, params?: boolean | AddEventListenerOptions): void;
@@ -366,9 +366,9 @@ export class Tradur extends EventTarget {
   /**
    * Shortcut for the `removeEventListener()` method.
    */
-  public off<T extends keyof TradurEventMap>(
+  public off<T extends keyof IntlBlazeEventMap>(
     type: T,
-    listener: (event: (TradurEventMap[T] extends Event ? TradurEventMap[T] : never)) => void,
+    listener: (event: (IntlBlazeEventMap[T] extends Event ? IntlBlazeEventMap[T] : never)) => void,
     params?: boolean | EventListenerOptions,
   ): void;
   public off(type: string, listener: Function, params?: boolean | EventListenerOptions): void;
@@ -378,11 +378,11 @@ export class Tradur extends EventTarget {
   }
 
   /**
-   * Clones the `Tradur` object, but returning an object that is
-   * in sync with the original `Tradur` object.
+   * Clones the `IntlBlaze` object, but returning an object that is
+   * in sync with the original `IntlBlaze` object.
    */
-  clone(): Tradur {
-    let r = new Tradur(Tradur._PRIVATE_CTOR);
+  clone(): IntlBlaze {
+    let r = new IntlBlaze(IntlBlaze._PRIVATE_CTOR);
     r._currentLocale = this._currentLocale;
     r._localeToPathComponents = this._localeToPathComponents;
     r._locales = this._locales;
@@ -398,7 +398,7 @@ export class Tradur extends EventTarget {
   }
 }
 
-export type TradurParams = {
+export type IntlBlazeParams = {
   locales: string[];
   fallbacks?: Record<string, string[]>;
   defaultLocale: string;
@@ -419,14 +419,14 @@ export type BundleInitializer = (
 ) => void;
 
 /**
- * Represents the current status of a `Tradur` instance.
+ * Represents the current status of a `IntlBlaze` instance.
  */
-export type TradurStatus = "ok" | "loading" | "error";
+export type IntlBlazeStatus = "ok" | "loading" | "error";
 
 /**
- * Event types dispatched by `Tradur`.
+ * Event types dispatched by `IntlBlaze`.
  */
-export type TradurEventMap = {
+export type IntlBlazeEventMap = {
   /**
    * Dispatched after successfully loading resources.
    */

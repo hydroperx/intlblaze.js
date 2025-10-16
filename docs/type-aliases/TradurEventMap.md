@@ -1,16 +1,16 @@
-[**@hydroperx/tradur**](../README.md)
+[**@hydroperx/intlblaze**](../README.md)
 
 ***
 
-[@hydroperx/tradur](../globals.md) / TradurEventMap
+[@hydroperx/intlblaze](../globals.md) / IntlBlazeEventMap
 
-# Type Alias: TradurEventMap
+# Type Alias: IntlBlazeEventMap
 
-> **TradurEventMap** = `object`
+> **IntlBlazeEventMap** = `object`
 
-Defined in: [src/index.ts:429](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L429)
+Defined in: [src/index.ts:429](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L429)
 
-Event types dispatched by `Tradur`.
+Event types dispatched by `IntlBlaze`.
 
 ## Properties
 
@@ -18,7 +18,7 @@ Event types dispatched by `Tradur`.
 
 > **error**: `Event`
 
-Defined in: [src/index.ts:437](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L437)
+Defined in: [src/index.ts:437](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L437)
 
 Dispatched after failing to load resources.
 
@@ -28,6 +28,6 @@ Dispatched after failing to load resources.
 
 > **load**: `Event`
 
-Defined in: [src/index.ts:433](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L433)
+Defined in: [src/index.ts:433](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L433)
 
 Dispatched after successfully loading resources.

@@ -1,10 +1,10 @@
 import { addFTLBundleResource } from "./bundleUtils";
 import axios from "axios";
-import type { Tradur } from ".";
+import type { IntlBlaze } from ".";
 import { FluentBundle } from "@fluent/bundle";
 
 export default function loader(
-  self: Tradur,
+  self: IntlBlaze,
   locale: Intl.Locale,
   localeAsStr: string,
   bundle: FluentBundle,

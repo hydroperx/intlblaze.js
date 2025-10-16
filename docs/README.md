@@ -1,8 +1,8 @@
-**@hydroperx/tradur**
+**@hydroperx/intlblaze**
 
 ***
 
-# Tradur
+# IntlBlaze
 
 <p align="center">
   <a href="_media/globals.md"><img src="https://img.shields.io/badge/TypeScript%20API%20Documentation-gray"></a>
@@ -17,19 +17,19 @@ That is an updated version of [com.hydroper.ftl](https://www.npmjs.com/package/c
 Install dependency:
 
 ```sh
-npm install @hydroperx/tradur
+npm install @hydroperx/intlblaze
 ```
 
 Example TypeScript:
 
 ```ts
-import { Tradur } from "@hydroperx/tradur";
+import { IntlBlaze } from "@hydroperx/intlblaze";
 
 class Main {
-    tradur: Tradur;
+    intlblaze: IntlBlaze;
 
     constructor() {
-        this.tradur = new Tradur({
+        this.intlblaze = new IntlBlaze({
             locales: ["en"],
             fallbacks: {
                 // "pt-BR": ["en"],
@@ -50,12 +50,12 @@ class Main {
     }
 
     async initialize() {
-        if (!(await this.tradur.load())) {
+        if (!(await this.intlblaze.load())) {
             // failed to load
             return;
         }
 
-        console.log(this.tradur.get("hello", { to: "Diantha" }));
+        console.log(this.intlblaze.get("hello", { to: "Diantha" }));
     }
 }
 
@@ -70,6 +70,6 @@ hello = Hello, { $to }!
 
 ## Server Usage
 
-Usually, for server applications, set the `clean` option to `false` and clone the `Tradur` object when necessary by invoking `tradur.clone();` to change the current locale.
+Usually, for server applications, set the `clean` option to `false` and clone the `IntlBlaze` object when necessary by invoking `intlblaze.clone();` to change the current locale.
 
-The `tradur.clone();` method clones the `Tradur` object, but still re-uses resources from the original object, avoiding resource duplication.
+The `intlblaze.clone();` method clones the `IntlBlaze` object, but still re-uses resources from the original object, avoiding resource duplication.

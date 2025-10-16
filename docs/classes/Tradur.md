@@ -1,12 +1,12 @@
-[**@hydroperx/tradur**](../README.md)
+[**@hydroperx/intlblaze**](../README.md)
 
 ***
 
-[@hydroperx/tradur](../globals.md) / Tradur
+[@hydroperx/intlblaze](../globals.md) / IntlBlaze
 
-# Class: Tradur
+# Class: IntlBlaze
 
-Defined in: [src/index.ts:9](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L9)
+Defined in: [src/index.ts:9](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L9)
 
 Manages Project Fluent translation lists (FTL) and translate
 messages.
@@ -19,19 +19,19 @@ messages.
 
 ### Constructor
 
-> **new Tradur**(`params`): `Tradur`
+> **new IntlBlaze**(`params`): `IntlBlaze`
 
-Defined in: [src/index.ts:46](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L46)
+Defined in: [src/index.ts:46](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L46)
 
 #### Parameters
 
 ##### params
 
-[`TradurParams`](../type-aliases/TradurParams.md)
+[`IntlBlazeParams`](../type-aliases/IntlBlazeParams.md)
 
 #### Returns
 
-`Tradur`
+`IntlBlaze`
 
 #### Overrides
 
@@ -45,7 +45,7 @@ Defined in: [src/index.ts:46](https://github.com/hydroperx/tradur.js/blob/f347be
 
 > **get** **currentLocale**(): `null` \| `Locale`
 
-Defined in: [src/index.ts:137](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L137)
+Defined in: [src/index.ts:137](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L137)
 
 Returns the currently loaded locale or null if none.
 
@@ -61,7 +61,7 @@ Returns the currently loaded locale or null if none.
 
 > **get** **fallbacks**(): `Locale`[]
 
-Defined in: [src/index.ts:156](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L156)
+Defined in: [src/index.ts:156](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L156)
 
 Returns the currently loaded fallbacks.
 
@@ -77,7 +77,7 @@ Returns the currently loaded fallbacks.
 
 > **get** **localeAndFallbacks**(): `Locale`[]
 
-Defined in: [src/index.ts:144](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L144)
+Defined in: [src/index.ts:144](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L144)
 
 Returns the currently loaded locale followed by its fallbacks or empty if no locale is loaded.
 
@@ -93,10 +93,10 @@ Returns the currently loaded locale followed by its fallbacks or empty if no loc
 
 > **get** **locales**(): `Set`\<`Locale`\>
 
-Defined in: [src/index.ts:117](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L117)
+Defined in: [src/index.ts:117](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L117)
 
 Returns a set of supported locales, reflecting
-the ones that were specified when constructing the `Tradur` object.
+the ones that were specified when constructing the `IntlBlaze` object.
 
 ##### Returns
 
@@ -108,16 +108,16 @@ the ones that were specified when constructing the `Tradur` object.
 
 #### Get Signature
 
-> **get** **status**(): [`TradurStatus`](../type-aliases/TradurStatus.md)
+> **get** **status**(): [`IntlBlazeStatus`](../type-aliases/IntlBlazeStatus.md)
 
-Defined in: [src/index.ts:169](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L169)
+Defined in: [src/index.ts:169](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L169)
 
-Returns the status of the `Tradur` instance
+Returns the status of the `IntlBlaze` instance
 (e.g., `"ok"`, `"loading"` or `"error"`).
 
 ##### Returns
 
-[`TradurStatus`](../type-aliases/TradurStatus.md)
+[`IntlBlazeStatus`](../type-aliases/IntlBlazeStatus.md)
 
 ## Methods
 
@@ -125,7 +125,7 @@ Returns the status of the `Tradur` instance
 
 > **addBundleInitializer**(`fn`): `void`
 
-Defined in: [src/index.ts:109](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L109)
+Defined in: [src/index.ts:109](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L109)
 
 Adds a bundle initializer. This allows defining custom functions and more.
 
@@ -189,16 +189,16 @@ The event listener is appended to target's event listener list and is not append
 
 ### clone()
 
-> **clone**(): `Tradur`
+> **clone**(): `IntlBlaze`
 
-Defined in: [src/index.ts:384](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L384)
+Defined in: [src/index.ts:384](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L384)
 
-Clones the `Tradur` object, but returning an object that is
-in sync with the original `Tradur` object.
+Clones the `IntlBlaze` object, but returning an object that is
+in sync with the original `IntlBlaze` object.
 
 #### Returns
 
-`Tradur`
+`IntlBlaze`
 
 ***
 
@@ -232,7 +232,7 @@ Dispatches a synthetic event event to target and returns true if either event's 
 
 > **get**(`id`, `args`, `errors`): `null` \| `string`
 
-Defined in: [src/index.ts:268](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L268)
+Defined in: [src/index.ts:268](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L268)
 
 Retrieves message and formats it. Returns `null` if undefined.
 
@@ -260,7 +260,7 @@ Retrieves message and formats it. Returns `null` if undefined.
 
 > **has**(`id`): `boolean`
 
-Defined in: [src/index.ts:321](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L321)
+Defined in: [src/index.ts:321](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L321)
 
 Determines if a message is defined.
 
@@ -280,7 +280,7 @@ Determines if a message is defined.
 
 > **load**(`newLocale`): `Promise`\<`boolean`\>
 
-Defined in: [src/index.ts:185](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L185)
+Defined in: [src/index.ts:185](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L185)
 
 Attempts to load a locale and its fallbacks.
 If the locale argument is specified, it is loaded.
@@ -311,7 +311,7 @@ when loading is completed.
 
 > **off**\<`T`\>(`type`, `listener`, `params?`): `void`
 
-Defined in: [src/index.ts:369](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L369)
+Defined in: [src/index.ts:369](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L369)
 
 Shortcut for the `removeEventListener()` method.
 
@@ -319,7 +319,7 @@ Shortcut for the `removeEventListener()` method.
 
 ###### T
 
-`T` *extends* keyof [`TradurEventMap`](../type-aliases/TradurEventMap.md)
+`T` *extends* keyof [`IntlBlazeEventMap`](../type-aliases/IntlBlazeEventMap.md)
 
 ##### Parameters
 
@@ -343,7 +343,7 @@ Shortcut for the `removeEventListener()` method.
 
 > **off**(`type`, `listener`, `params?`): `void`
 
-Defined in: [src/index.ts:374](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L374)
+Defined in: [src/index.ts:374](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L374)
 
 Shortcut for the `removeEventListener()` method.
 
@@ -373,7 +373,7 @@ Shortcut for the `removeEventListener()` method.
 
 > **on**\<`T`\>(`type`, `listener`, `params?`): `void`
 
-Defined in: [src/index.ts:355](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L355)
+Defined in: [src/index.ts:355](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L355)
 
 Shortcut for the `addEventListener()` method.
 
@@ -381,7 +381,7 @@ Shortcut for the `addEventListener()` method.
 
 ###### T
 
-`T` *extends* keyof [`TradurEventMap`](../type-aliases/TradurEventMap.md)
+`T` *extends* keyof [`IntlBlazeEventMap`](../type-aliases/IntlBlazeEventMap.md)
 
 ##### Parameters
 
@@ -405,7 +405,7 @@ Shortcut for the `addEventListener()` method.
 
 > **on**(`type`, `listener`, `params?`): `void`
 
-Defined in: [src/index.ts:360](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L360)
+Defined in: [src/index.ts:360](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L360)
 
 Shortcut for the `addEventListener()` method.
 
@@ -467,10 +467,10 @@ Removes the event listener in target's event listener list with the same type, c
 
 > **supportsLocale**(`argument`): `boolean`
 
-Defined in: [src/index.ts:130](https://github.com/hydroperx/tradur.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L130)
+Defined in: [src/index.ts:130](https://github.com/hydroperx/intlblaze.js/blob/f347be9143f2fbd50c3b535bcb3390077b13f2ec/src/index.ts#L130)
 
 Returns `true` if the locale is one of the supported locales
-that were specified when constructing the `Tradur` object,
+that were specified when constructing the `IntlBlaze` object,
 otherwise `false`.
 
 #### Parameters

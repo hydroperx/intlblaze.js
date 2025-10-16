@@ -1,16 +1,16 @@
-[**@hydroperx/tradur**](README.md)
+[**@hydroperx/intlblaze**](README.md)
 
 ***
 
-# @hydroperx/tradur
+# @hydroperx/intlblaze
 
 ## Classes
 
-- [Tradur](classes/Tradur.md)
+- [IntlBlaze](classes/IntlBlaze.md)
 
 ## Type Aliases
 
 - [BundleInitializer](type-aliases/BundleInitializer.md)
-- [TradurEventMap](type-aliases/TradurEventMap.md)
-- [TradurParams](type-aliases/TradurParams.md)
-- [TradurStatus](type-aliases/TradurStatus.md)
+- [IntlBlazeEventMap](type-aliases/IntlBlazeEventMap.md)
+- [IntlBlazeParams](type-aliases/IntlBlazeParams.md)
+- [IntlBlazeStatus](type-aliases/IntlBlazeStatus.md)
